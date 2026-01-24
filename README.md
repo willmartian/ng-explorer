@@ -1,6 +1,6 @@
 # ng-explorer
 
-A CLI tool to efficiently search and explore Angular components, services, directives, and other constructs in the Bitwarden clients monorepo using Compodoc documentation.
+A CLI tool to efficiently search and explore Angular components, services, directives, and other constructs in Angular projects using Compodoc documentation.
 
 ## Features
 
@@ -39,35 +39,35 @@ This creates a `documentation.json` file in the repository root.
 Search for Angular constructs by name, or omit the query to list all:
 
 ```bash
-# Search for anything matching "vault"
-ng-explorer search vault
+# Search for anything matching "foo"
+ng-explorer search foo
 
 # Search only components
-ng-explorer search vault --type component
+ng-explorer search foo --type component
 
 # List all components (no search query)
 ng-explorer search --type component --limit 10
 
 # Search only services (injectables)
-ng-explorer search cipher --type injectable
+ng-explorer search bar --type injectable
 
 # List all services
 ng-explorer search --type injectable
 
 # Search directives
-ng-explorer search autofocus --type directive
+ng-explorer search tooltip --type directive
 
 # Search with path filter (only in web app)
-ng-explorer search vault --path "apps/web/**"
+ng-explorer search foo --path "apps/web/**"
 
 # List all components in web app
 ng-explorer search --type component --path "apps/web/**"
 
 # Search in specific library
-ng-explorer search cipher --path "libs/vault/**"
+ng-explorer search bar --path "libs/common/**"
 
 # Search in specific subdirectory
-ng-explorer search form --path "libs/vault/src/cipher-form/**"
+ng-explorer search form --path "libs/common/src/components/**"
 ```
 
 ### View API Details
@@ -76,13 +76,13 @@ Get comprehensive API information for a specific construct:
 
 ```bash
 # View component API
-ng-explorer api VaultItemsComponent
+ng-explorer api FooComponent
 
 # View service API
-ng-explorer api CipherService
+ng-explorer api BarService
 
 # Search for a specific type
-ng-explorer api CipherService --type injectable
+ng-explorer api BarService --type injectable
 ```
 
 The API command shows:
@@ -118,8 +118,8 @@ Total:          867
 If your documentation.json is in a different location:
 
 ```bash
-ng-explorer --doc-path /path/to/documentation.json search vault
-ng-explorer -d ./docs/documentation.json api CipherService
+ng-explorer --doc-path /path/to/documentation.json search foo
+ng-explorer -d ./docs/documentation.json api FooService
 ```
 
 ## Command Reference
@@ -139,17 +139,17 @@ Search for Angular constructs by name or description. Omit the query to list all
 **Examples:**
 ```bash
 # Search for constructs
-ng-explorer search "password"
-ng-explorer search "vault" --type component
-ng-explorer search "cipher" -t injectable
+ng-explorer search "user"
+ng-explorer search "foo" --type component
+ng-explorer search "bar" -t injectable
 
 # List all constructs (no query)
 ng-explorer search --type component --limit 10
 ng-explorer search --type injectable
 
 # Combine filters
-ng-explorer search "vault" --path "apps/web/**"
-ng-explorer search --type component --path "libs/vault/**" --limit 20
+ng-explorer search "foo" --path "apps/web/**"
+ng-explorer search --type component --path "libs/common/**" --limit 20
 ```
 
 ### `api <name> [options]`
@@ -164,9 +164,9 @@ Display detailed API information for a construct.
 
 **Examples:**
 ```bash
-ng-explorer api VaultItemsComponent
-ng-explorer api CipherService
-ng-explorer api AutofocusDirective --type directive
+ng-explorer api FooComponent
+ng-explorer api BarService
+ng-explorer api TooltipDirective --type directive
 ```
 
 ### `stats`
@@ -188,9 +188,9 @@ Search results are displayed in a table format:
 ┌───────────┬─────────────────────────┬──────────────────────────────────┬───────────────────┐
 │ Type      │ Name                    │ File                             │ Selector/Pipe     │
 ├───────────┼─────────────────────────┼──────────────────────────────────┼───────────────────┤
-│ component │ VaultItemsComponent     │ apps/web/src/app/vault/...       │ app-vault-items   │
-│ component │ VaultFilterComponent    │ apps/web/src/app/vault/...       │ app-vault-filter  │
-│ injectable│ VaultFilterService      │ libs/common/src/vault/...        │ —                 │
+│ component │ FooComponent            │ apps/web/src/app/foo/...         │ app-foo           │
+│ component │ BarComponent            │ apps/web/src/app/bar/...         │ app-bar           │
+│ injectable│ BazService              │ libs/common/src/services/...     │ —                 │
 └───────────┴─────────────────────────┴──────────────────────────────────┴───────────────────┘
 
 Found 3 result(s)
@@ -201,33 +201,33 @@ Found 3 result(s)
 API details are formatted with sections:
 
 ```
-VaultItemsComponent
-File: apps/web/src/app/vault/vault-items/vault-items.component.ts
+FooComponent
+File: apps/web/src/app/foo/foo.component.ts
 Type: component
 Standalone: Yes
 
 Selector:
-  app-vault-items
+  app-foo
 
 Inputs:
-  • collections: Collection[]
-    Filter items by collections
-  • filter: VaultFilter
-    Current vault filter settings
+  • items: Item[]
+    List of items to display
+  • config: FooConfig
+    Configuration options
 
 Outputs:
   • itemSelected: EventEmitter<string>
-    Emitted when a vault item is selected
+    Emitted when an item is selected
 
 Methods:
   • refresh(): Promise<void>
-    Refreshes the vault items list
+    Refreshes the items list
   • selectItem(id: string): void
-    Selects a vault item by ID
+    Selects an item by ID
 
 Constructor Dependencies:
-  • cipherService: CipherService
-  • collectionService: CollectionService
+  • fooService: FooService
+  • barService: BarService
 ```
 
 ## Troubleshooting
