@@ -8,6 +8,16 @@ A CLI tool to efficiently search and explore Angular components, services, direc
 npm install -g ng-explorer
 ```
 
+### Claude Code Integration
+
+For Claude Code users, install the plugin to enable the `/ng-explorer` skill:
+
+```bash
+/plugin install https://github.com/willmartian/ng-explorer
+```
+
+Once installed, you can use `/ng-explorer` directly in your Claude Code sessions to search Angular constructs.
+
 ## Prerequisites
 
 `ng-explorer` uses Compodoc under the hood. You need to generate the documentation first:
@@ -21,77 +31,92 @@ This creates a `documentation.json` file in the repository root.
 
 ## Usage
 
-### Search for Components/Services
+### Basic Search
 
 Search for Angular constructs by name, or omit the query to list all:
 
 ```bash
-# Search for anything matching "foo"
-ng-explorer search foo
+# Fuzzy search for anything matching "foo"
+ng-explorer foo
 
 # List all components
-ng-explorer search --type component
+ng-explorer --type component
 
-# Search only components fuzzy-match "foo"
-ng-explorer search foo --type component
+# Search only components matching "foo"
+ng-explorer foo --type component
 
 # Search directives
-ng-explorer search tooltip --type directive
+ng-explorer tooltip --type directive
 
 # Search in specific subdirectory
-ng-explorer search form --path "libs/common/src/components/**"
+ng-explorer form --path "libs/common/src/components/**"
+
+# Exact name match (no fuzzy search)
+ng-explorer FooComponent --exact
+
+# Exact match with type filter
+ng-explorer BarService --exact --type injectable
 ```
 
-### View API Details
+### Verbose API Details
 
-Get comprehensive API information for a specific construct:
+Show full API details using the `--verbose` flag:
 
 ```bash
-# View component API
-ng-explorer api FooComponent
-
-# View service API
-ng-explorer api BarService
-
-# Search for a specific type
-ng-explorer api BarService --type injectable
+# View component API (exact match + verbose)
+ng-explorer FooComponent --exact --verbose
 ```
 
-The API command shows:
+The verbose view shows:
 - **For Components**: selector, standalone status, inputs, outputs, properties, methods, constructor dependencies
 - **For Services**: properties, methods, constructor dependencies
 - **For Directives**: selector, inputs, outputs, methods
 - **For Pipes**: pipe name, pure status
-
-### View Statistics
-
-Show statistics about the codebase:
-
-```bash
-ng-explorer stats
-```
-
-Output:
-```
-Angular Codebase Statistics
-────────────────────────────────────────
-Components:     245
-Injectables:    187
-Directives:     42
-Pipes:          28
-Modules:        53
-Classes:        312
-────────────────────────────────────────
-Total:          867
-```
 
 ### Custom Documentation Path
 
 If your documentation.json is in a different location:
 
 ```bash
-ng-explorer --doc-path /path/to/documentation.json search foo
-ng-explorer -d ./docs/documentation.json api FooService
+ng-explorer --doc-path /path/to/documentation.json foo
+ng-explorer -d ./docs/documentation.json FooService --exact --verbose
+```
+
+## Command Reference
+
+### `ng-explorer [query] [options]`
+
+Search for Angular constructs by name or list all constructs.
+
+**Arguments:**
+- `[query]` - Search query string (optional - omit to list all)
+
+**Options:**
+- `-d, --doc-path <path>` - Path to documentation.json file (default: `./documentation.json`)
+- `-t, --type <type>` - Filter by type: `component`, `injectable`, `directive`, `pipe`, `module`, `class`, `all` (default: `all`)
+- `-p, --path <pattern>` - Filter by file path pattern (supports wildcards like `apps/web/**` or `libs/common/**`)
+- `-l, --limit <number>` - Limit number of results (default: `50`)
+- `-v, --verbose` - Show full API details for each result
+- `-e, --exact` - Use exact name matching instead of fuzzy search
+
+**Examples:**
+```bash
+# Fuzzy search
+ng-explorer foo
+ng-explorer bar --type injectable
+
+# Exact match
+ng-explorer FooComponent --exact
+
+# Show verbose API details
+ng-explorer FooComponent --exact --verbose
+ng-explorer foo --verbose
+
+# Combine filters
+ng-explorer foo --path "apps/web/**" --type component
+
+# Custom documentation path
+ng-explorer -d ./docs/documentation.json foo
 ```
 
 ## Troubleshooting

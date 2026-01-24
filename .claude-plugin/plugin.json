@@ -1,0 +1,14 @@
+{
+  "name": "ng-explorer",
+  "version": "0.0.1",
+  "description": "Search and explore Angular components, services, directives, and other constructs using Compodoc documentation",
+  "author": "willmartian",
+  "homepage": "https://github.com/willmartian/ng-explorer",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/willmartian/ng-explorer.git"
+  },
+  "skills": [
+    "skills/ng-explorer"
+  ]
+}

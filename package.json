@@ -8,6 +8,12 @@
   "bin": {
     "ng-explorer": "./bin/ng-explorer.js"
   },
+  "files": [
+    "dist",
+    "bin",
+    ".claude-plugin",
+    "skills"
+  ],
   "scripts": {
     "build": "tsc",
     "watch": "tsc --watch",
@@ -18,7 +24,9 @@
     "cli",
     "compodoc",
     "explorer",
-    "documentation"
+    "documentation",
+    "claude-code",
+    "claude-plugin"
   ],
   "license": "GPL-3.0",
   "dependencies": {

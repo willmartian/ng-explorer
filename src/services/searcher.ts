@@ -16,10 +16,23 @@ export type ConstructType =
  */
 export class Searcher {
   private allConstructs: AngularConstruct[] = [];
-  private fuse: Fuse<AngularConstruct> | null = null;
+  private fuse: Fuse<AngularConstruct & { normalizedName: string }> | null = null;
 
   constructor(private data: CompodocData) {
     this.buildSearchIndex();
+  }
+
+  /**
+   * Strip common Angular suffixes from a name
+   */
+  private stripSuffix(name: string): string {
+    const suffixes = ['Component', 'Directive', 'Service', 'Pipe', 'Module'];
+    for (const suffix of suffixes) {
+      if (name.endsWith(suffix) && name.length > suffix.length) {
+        return name.slice(0, -suffix.length);
+      }
+    }
+    return name;
   }
 
   /**
@@ -36,12 +49,16 @@ export class Searcher {
       ...(this.data.classes || []),
     ];
 
+    // Create enhanced constructs with normalized names for better fuzzy matching
+    const searchableConstructs = this.allConstructs.map(construct => ({
+      ...construct,
+      normalizedName: this.stripSuffix(construct.name),
+    }));
+
     // Configure Fuse.js for fuzzy search
-    this.fuse = new Fuse(this.allConstructs, {
+    this.fuse = new Fuse(searchableConstructs, {
       keys: [
-        { name: 'name', weight: 2 },
-        { name: 'description', weight: 1 },
-        { name: 'file', weight: 0.5 },
+        { name: 'normalizedName', weight: 2 },
         { name: 'selector', weight: 1.5 },
       ],
       threshold: 0.3,
@@ -58,15 +75,47 @@ export class Searcher {
       return [];
     }
 
-    // Perform fuzzy search
-    const results = this.fuse.search(query);
+    // Strip suffix from query for better fuzzy matching
+    const normalizedQuery = this.stripSuffix(query);
 
-    // Extract items and filter by type
-    let constructs = results.map((result) => result.item);
+    // Perform fuzzy search with normalized query
+    const results = this.fuse.search(normalizedQuery);
+
+    // Extract items (remove normalizedName property) and filter by type
+    let constructs: AngularConstruct[] = results.map((result) => {
+      const { normalizedName, ...construct } = result.item;
+      return construct as AngularConstruct;
+    });
 
     if (type !== 'all') {
       constructs = constructs.filter((construct) => construct.type === type);
     }
+
+    // Filter by path pattern if provided
+    if (pathPattern) {
+      constructs = this.filterByPath(constructs, pathPattern);
+    }
+
+    // Apply limit
+    return constructs.slice(0, limit);
+  }
+
+  /**
+   * Search for constructs by exact name matching
+   */
+  searchExact(query: string, type: ConstructType = 'all', pathPattern?: string, limit: number = 50): AngularConstruct[] {
+    let constructs = this.allConstructs;
+
+    // Filter by type
+    if (type !== 'all') {
+      constructs = constructs.filter((construct) => construct.type === type);
+    }
+
+    // Filter by exact name match (case-insensitive)
+    const lowerQuery = query.toLowerCase();
+    constructs = constructs.filter((construct) =>
+      construct.name.toLowerCase() === lowerQuery
+    );
 
     // Filter by path pattern if provided
     if (pathPattern) {
