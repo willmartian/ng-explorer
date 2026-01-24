@@ -1,0 +1,35 @@
+{
+  "name": "ng-explorer",
+  "version": "0.0.1",
+  "description": "CLI tool to explore Angular components and services using Compodoc documentation",
+  "type": "module",
+  "main": "dist/index.js",
+  "packageManager": "pnpm@10.28.1",
+  "bin": {
+    "ng-explorer": "./bin/ng-explorer.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc --watch",
+    "clean": "rm -rf dist"
+  },
+  "keywords": [
+    "angular",
+    "cli",
+    "compodoc",
+    "explorer",
+    "documentation"
+  ],
+  "author": "Bitwarden",
+  "license": "GPL-3.0",
+  "dependencies": {
+    "chalk": "^5.3.0",
+    "commander": "^12.0.0",
+    "fuse.js": "^7.0.0",
+    "minimatch": "^9.0.3"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.0",
+    "typescript": "^5.3.3"
+  }
+}
