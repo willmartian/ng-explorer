@@ -1,13 +1,13 @@
 ---
 name: ng-explorer
-description: Search and explore Angular components, services, directives, and other constructs in Angular projects using Compodoc documentation
+description: Search and explore Angular components, services, directives, and other constructs in Angular projects.
 argument-hint: [query] [--type component|injectable|directive|pipe|module|class] [--verbose] [--exact]
 allowed-tools: Bash(ng-explorer*)
 ---
 
 # ng-explorer
 
-Use the `ng-explorer` CLI to search and explore Angular constructs in the codebase.
+Use the `ng-explorer` CLI to search and explore Angular constructs in the codebase. Use this when exploring what Angular code exists and how to use it.
 
 ## Prerequisites
 
@@ -20,7 +20,7 @@ npx compodoc -p tsconfig.json -e json -d . --disablePrivate --disableProtected
 ## Usage
 
 ```bash
-ng-explorer [query] [options]
+npx ng-explorer [query] [options]
 ```
 
 ### Options
@@ -39,56 +39,56 @@ Fuzzy search automatically strips common Angular suffixes (Component, Service, D
 
 ```bash
 # Search for "Foo" matches FooComponent, FooService, etc.
-ng-explorer foo
+npx ng-explorer foo
 
 # Search only components
-ng-explorer foo --type component
+npx ng-explorer foo --type component
 
 # Search only services
-ng-explorer bar --type injectable
+npx ng-explorer bar --type injectable
 ```
 
 ### Find exact construct by name
 
 ```bash
 # Exact name match
-ng-explorer FooComponent --exact
+npx ng-explorer FooComponent --exact
 
 # Exact match with verbose output
-ng-explorer BarService --exact --verbose
+npx ng-explorer BarService --exact --verbose
 ```
 
 ### List all constructs of a type
 
 ```bash
 # List all components
-ng-explorer --type component
+npx ng-explorer --type component
 
 # List all services
-ng-explorer --type injectable
+npx ng-explorer --type injectable
 
 # List all directives
-ng-explorer --type directive
+npx ng-explorer --type directive
 ```
 
 ### View detailed API information
 
 ```bash
 # Show full API details for search results
-ng-explorer foo --verbose
+npx ng-explorer foo --verbose
 
 # Exact match with full details
-ng-explorer FooComponent --exact --verbose
+npx ng-explorer FooComponent --exact --verbose
 ```
 
 ### Filter by path
 
 ```bash
 # Search in specific directory
-ng-explorer foo --path "apps/web/**"
+npx ng-explorer foo --path "apps/web/**"
 
 # Search in library
-ng-explorer bar --path "libs/common/**"
+npx ng-explorer bar --path "libs/common/**"
 ```
 
 ## Output Formats
@@ -116,22 +116,22 @@ When the user asks about Angular components, services, or project structure:
 
 **User asks: "What components do we have for navigation?"**
 ```bash
-ng-explorer nav --type component
+npx ng-explorer nav --type component
 ```
 
 **User asks: "Show me the API for the AuthService"**
 ```bash
-ng-explorer AuthService --exact --verbose --type injectable
+npx ng-explorer AuthService --exact --verbose --type injectable
 ```
 
 **User asks: "What services are in the common library?"**
 ```bash
-ng-explorer --type injectable --path "libs/common/**"
+npx ng-explorer --type injectable --path "libs/common/**"
 ```
 
 **User asks: "Find all directives that handle tooltips"**
 ```bash
-ng-explorer tooltip --type directive
+npx ng-explorer tooltip --type directive
 ```
 
 ## Notes
