@@ -1,7 +1,7 @@
 {
   "name": "ng-explorer",
-  "version": "0.0.1",
-  "description": "CLI tool to explore Angular components and services using Compodoc documentation",
+  "version": "0.0.2",
+  "description": "CLI tool and Claude plugin to search and explore components, services, directives, and other constructs in Angular projects",
   "type": "module",
   "main": "dist/index.js",
   "packageManager": "pnpm@10.28.1",
