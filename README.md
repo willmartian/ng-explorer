@@ -13,7 +13,11 @@ npm install -g ng-explorer
 For Claude Code users, install the plugin to enable the `/ng-explorer` skill:
 
 ```bash
-/plugin install https://github.com/willmartian/ng-explorer
+# Add the marketplace
+/plugin marketplace add willmartian/claude-plugins
+
+# Install the plugin
+/plugin install ng-explorer@willmartian
 ```
 
 Once installed, you can use `/ng-explorer` directly in your Claude Code sessions to search Angular constructs.
